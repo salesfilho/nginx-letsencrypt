@@ -27,7 +27,27 @@ services:
       - ./certs:/etc/letsencrypt
       - ./html:/var/www/html
 
-    command: certonly -v --dns-route53 --email ${CERTBOT_EMAIL} --agree-tos -d ${DOMAIN} -d ${WILDCARD_DOMAIN}
+    # Comando para gerar o certificado
+    # Certifique-se de que as variáveis de ambiente estão definidas no arquivo .env
+    #command: certonly -v --dns-route53 --email ${CERTBOT_EMAIL} --agree-tos -d ${DOMAIN} -d ${WILDCARD_DOMAIN}
+
+    # Esse comando é usado para verificar os certificados existentes
+    # e manter o contêiner ativo para verificações periódicas
+    command: >
+      sh -c '
+      while true; do
+        echo "[$(date)] Verificando certificados..." &&
+        certbot certificates &&
+        echo "Status OK. Próxima verificação em 1 hora..." &&
+        sleep 3600
+      done
+      '
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "certbot", "certificates"]
+      interval: 1h
+      timeout: 30s
+      retries: 3
 
 networks:
   proxy_net:
