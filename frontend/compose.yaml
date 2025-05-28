@@ -1,0 +1,35 @@
+
+services:
+  # Serviço do aplicativo med5
+  med5-hub:
+    image: 761160219175.dkr.ecr.us-east-1.amazonaws.com/med5/hub:test
+    container_name: med5-hub
+    restart: unless-stopped
+    networks:
+      - proxy_net
+
+  med5-manager:
+    image: 761160219175.dkr.ecr.us-east-1.amazonaws.com/med5/manager:test
+    container_name: med5-manager
+    restart: unless-stopped
+    networks:
+      - proxy_net
+
+  med5-panel:
+    image: 761160219175.dkr.ecr.us-east-1.amazonaws.com/med5/panel:test
+    container_name: med5-panel
+    restart: unless-stopped
+    networks:
+      - proxy_net
+  med5-app:
+    image: 761160219175.dkr.ecr.us-east-1.amazonaws.com/med5/app:test
+    container_name: med5-app
+    restart: unless-stopped
+    networks:
+      - proxy_net
+
+networks:
+  proxy_net:
+    name: proxy_net
+    driver: bridge
+    external: true  # Conectado na rede do Traefik existente

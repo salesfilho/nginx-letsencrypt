@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+      - ./certs:/etc/letsencrypt
+      - ./html:/var/www/html
+      - ./logs:/var/log/nginx
+    networks:
+      - proxy_net
+    command: [nginx-debug, '-g', 'daemon off;']
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certs:/etc/letsencrypt
+      - ./html:/var/www/html
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+networks:
+  proxy_net:
+  name: proxy_net
+  attachable: true
+  external: false  # Isso permite que o compose crie a rede se não existir
+  driver: bridge
