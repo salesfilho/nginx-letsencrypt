@@ -23,7 +23,15 @@ services:
     volumes:
       - ./certs:/etc/letsencrypt
       - ./html:/var/www/html
+    
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    command: >
+      sh -c '
+      certbot certonly --webroot -w /var/www/html \
+      -d med5.com.br -d *.med5.com.br \
+      --email salesfilho@med5.com.br \ 
+      --agree-tos --non-interactive --keep-until-expiring
+      '
 
 networks:
   proxy_net:
