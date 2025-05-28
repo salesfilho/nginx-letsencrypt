@@ -38,7 +38,7 @@ services:
         -n --agree-tos --email $${CERTBOT_EMAIL} \
         -d $${CERTBOT_DOMAINS//,/ -d } \
         --keep-until-expiring
-
+      '
 networks:
   proxy_net:
     name: proxy_net
