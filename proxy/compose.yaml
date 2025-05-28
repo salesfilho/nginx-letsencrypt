@@ -26,7 +26,7 @@ services:
 
 networks:
   proxy_net:
-  name: proxy_net
-  attachable: true
-  external: false  # Isso permite que o compose crie a rede se não existir
-  driver: bridge
+    name: proxy_net
+    attachable: true
+    external: false  # Isso permite que o compose crie a rede se não existir
+    driver: bridge
