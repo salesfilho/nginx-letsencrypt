@@ -26,23 +26,9 @@ services:
     volumes:
       - ./certs:/etc/letsencrypt
       - ./html:/var/www/html
-    
-    command: >
-      sh -c '
-      mkdir -p /root/.aws &&
-      echo "[default]
-      region = $${AWS_REGION}
-      output = json
-      aws_access_key_id = $${AWS_ACCESS_KEY_ID}
-      aws_secret_access_key = $${AWS_SECRET_ACCESS_KEY}" > /root/.aws/credentials &&
-      chmod 600 /root/.aws/credentials &&
-      certbot certonly \
-        --dns-route53 \
-        --dns-route53-propagation-seconds 30 \
-        -n --agree-tos --email $${CERTBOT_EMAIL} \
-        -d $${CERTBOT_DOMAINS//,/ -d } \
-        --keep-until-expiring
-      '
+
+    command: certonly --dns-route53 --email $${CERTBOT_EMAIL} --agree-tos -d $${CERTBOT_DOMAINS}
+
 networks:
   proxy_net:
     name: proxy_net
