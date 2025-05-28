@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   nginx:
@@ -15,23 +14,30 @@ services:
       - ./logs:/var/log/nginx
     networks:
       - proxy_net
-    command: [nginx-debug, '-g', 'daemon off;']
+    depends_on:
+      - certbot
+    #command: [nginx-debug, '-g', 'daemon off;']
 
   certbot:
-    image: certbot/certbot
+    image: certbot/dns-route53
     container_name: certbot
+    env_file:
+      - .env
     volumes:
       - ./certs:/etc/letsencrypt
       - ./html:/var/www/html
     
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     command: >
       sh -c '
-      certbot certonly --webroot -w /var/www/html \
-      -d med5.com.br -d *.med5.com.br \
-      --email salesfilho@med5.com.br \ 
-      --agree-tos --non-interactive --keep-until-expiring
-      '
+      echo "dns_route53_access_key_id = $${AWS_ACCESS_KEY_ID}
+      dns_route53_secret_access_key = $${AWS_SECRET_ACCESS_KEY}" > /root/.aws/credentials.ini &&
+      chmod 600 /root/.aws/credentials.ini &&
+      certbot certonly \
+        --dns-route53 \
+        --dns-route53-propagation-seconds 30 \
+        -n --agree-tos --email $${CERTBOT_EMAIL} \
+        -d $${CERTBOT_DOMAINS//,/ -d } \
+        --keep-until-expiring
 
 networks:
   proxy_net:
