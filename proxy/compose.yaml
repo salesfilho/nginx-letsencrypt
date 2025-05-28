@@ -27,7 +27,7 @@ services:
       - ./certs:/etc/letsencrypt
       - ./html:/var/www/html
 
-    command: certonly --dns-route53 --email $${CERTBOT_EMAIL} --agree-tos -d $${DOMAIN} -d $${WILDCARD_DOMAIN}
+    command: certonly -v --dns-route53 --email ${CERTBOT_EMAIL} --agree-tos -d $${DOMAIN} -d ${WILDCARD_DOMAIN}
 
 networks:
   proxy_net:
