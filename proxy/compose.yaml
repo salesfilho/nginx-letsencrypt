@@ -30,12 +30,12 @@ services:
     command: >
       sh -c '
       mkdir -p /root/.aws &&
-      echo "[default]" > /root/.aws/credentials.ini &&
-      echo "region = $${AWS_REGION}" >> /root/.aws/credentials.ini &&
-      echo "output = json" >> /root/.aws/credentials.ini &&
-      echo "dns_route53_access_key_id = $${AWS_ACCESS_KEY_ID}" >> /root/.aws/credentials.ini &&
-      echo "dns_route53_secret_access_key = $${AWS_SECRET_ACCESS_KEY}" >> /root/.aws/credentials.ini &&
-      chmod 600 /root/.aws/credentials.ini &&
+      echo "[default]
+      region = $${AWS_REGION}
+      output = json
+      aws_access_key_id = $${AWS_ACCESS_KEY_ID}
+      aws_secret_access_key = $${AWS_SECRET_ACCESS_KEY}" > /root/.aws/credentials &&
+      chmod 600 /root/.aws/credentials &&
       certbot certonly \
         --dns-route53 \
         --dns-route53-propagation-seconds 30 \
