@@ -29,8 +29,12 @@ services:
     
     command: >
       sh -c '
-      echo "dns_route53_access_key_id = $${AWS_ACCESS_KEY_ID}
-      dns_route53_secret_access_key = $${AWS_SECRET_ACCESS_KEY}" > /root/.aws/credentials.ini &&
+      mkdir -p /root/.aws &&
+      echo "[default]" > /root/.aws/credentials.ini &&
+      echo "region = $${AWS_REGION}" >> /root/.aws/credentials.ini &&
+      echo "output = json" >> /root/.aws/credentials.ini &&
+      echo "dns_route53_access_key_id = $${AWS_ACCESS_KEY_ID}" >> /root/.aws/credentials.ini &&
+      echo "dns_route53_secret_access_key = $${AWS_SECRET_ACCESS_KEY}" >> /root/.aws/credentials.ini &&
       chmod 600 /root/.aws/credentials.ini &&
       certbot certonly \
         --dns-route53 \
