@@ -3,21 +3,21 @@ services:
   # Serviço do aplicativo med5
   med5-hub:
     image: 761160219175.dkr.ecr.us-east-1.amazonaws.com/med5/hub:test
-    container_name: med5-hub
+    scale: 1
     restart: unless-stopped
     networks:
       - proxy_net
 
   med5-manager:
     image: 761160219175.dkr.ecr.us-east-1.amazonaws.com/med5/manager:test
-    container_name: med5-manager
+    scale: 1 
     restart: unless-stopped
     networks:
       - proxy_net
 
   med5-panel:
     image: 761160219175.dkr.ecr.us-east-1.amazonaws.com/med5/panel:test
-    container_name: med5-panel
+    scale: 1
     restart: unless-stopped
     networks:
       - proxy_net
