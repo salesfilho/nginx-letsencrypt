@@ -24,6 +24,8 @@ services:
   med5-app:
     image: 761160219175.dkr.ecr.us-east-1.amazonaws.com/med5/app:test
     container_name: med5-app
+    deploy:
+      replicas: 2  # Número de réplicas
     restart: unless-stopped
     networks:
       - proxy_net
