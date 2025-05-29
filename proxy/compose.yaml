@@ -13,6 +13,7 @@ services:
       - ./certs:/etc/letsencrypt
       - ./html:/var/www/html
       - ./logs:/var/log/nginx
+      - ./error_pages:/usr/share/nginx/html
     networks:
       - proxy_net
     depends_on:
