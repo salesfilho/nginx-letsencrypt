@@ -28,6 +28,8 @@ services:
     volumes:
       - ./certs:/etc/letsencrypt
       - ./html:/var/www/html
+    networks:
+      - proxy_net
 
     # Comando para gerar o certificado
     # Certifique-se de que as variáveis de ambiente estão definidas no arquivo .env
