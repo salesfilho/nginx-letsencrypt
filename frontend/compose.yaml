@@ -23,7 +23,6 @@ services:
       - proxy_net
   med5-app:
     image: 761160219175.dkr.ecr.us-east-1.amazonaws.com/med5/app:test
-    container_name: med5-app
     scale: 2 
     restart: unless-stopped
     networks:
